@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Button from "../components/ui/Button";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+import Input from "../components/ui/Input";
 
 const Signup = () => {
   return (
@@ -29,17 +30,30 @@ const Signup = () => {
             </Button>
           </div>
 
-          <div>
-            <div></div>
-            <span>OR</span>
-            <div></div>
+          <div className="flex items-center mb-8">
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+            <span className="px-4 text-gray-500 text-sm font-medium">OR</span>
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
           </div>
 
-          <form>
-            <input type="email" />
-            <input type="text" />
-            <input type="text" />
-            <input type="password" />
+          <form className="space-y-4">
+            <Input
+              type="email"
+              name="email"
+              placeholder="Email address"
+              required
+            />
+
+            <Input name="fullName" placeholder="Full Name" required />
+
+            <Input name="username" placeholder="Username" required />
+
+            <Input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
 
             <p>
               People who use our service may have uploaded your contact
