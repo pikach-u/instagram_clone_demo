@@ -3,14 +3,14 @@ import { authService } from "../services/auth";
 
 const useAuthStore = create((set) => ({
   user: "",
-  isAuthenticated: "",
+  isAuthenticated: authService.isAuthenticated(),
   loading: false,
   error: null,
 
-  login: async (email, password) => {
+  login: async (userData) => {
     set({ loading: true, error: null });
     try {
-      const data = await authService.login(email, password);
+      const data = await authService.login(userData);
       set({
         user: data.user,
         isAuthenticated: true,
@@ -42,6 +42,15 @@ const useAuthStore = create((set) => ({
       });
       throw err;
     }
+  },
+
+  logout: () => {
+    authService.logout();
+    set({
+      user: null,
+      isAuthenticated: false,
+      error: null,
+    });
   },
 }));
 
