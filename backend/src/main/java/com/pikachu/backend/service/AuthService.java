@@ -12,12 +12,10 @@ import com.pikachu.backend.exception.UserAlreadyExistsException;
 import com.pikachu.backend.repository.UserRepository;
 import com.pikachu.backend.security.JwtService;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 
 @Service
 @RequiredArgsConstructor

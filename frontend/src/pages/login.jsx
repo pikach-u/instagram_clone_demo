@@ -12,14 +12,23 @@ const Login = () => {
   const { login, loading, error } = useAuthStore();
 
   const [formData, setFormData] = useState({
-    email: "",
+    emailOrUsername: "",
     password: "",
   });
+
+  const isEmail = (value) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(formData);
+      const loginData = isEmail(formData.emailOrUsername)
+        ? { email: formData.emailOrUsername, password: formData.password }
+        : { username: formData.emailOrUsername, password: formData.password };
+
+      await login(loginData);
       navigate("/");
     } catch (err) {
       console.error(err);
@@ -31,6 +40,12 @@ const Login = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleSocialLogin = (provider) => {
+    window.location.href = `${
+      import.meta.env.VITE_API_URL
+    }/oauth2/authorization/${provider}`;
   };
 
   return (
@@ -45,8 +60,8 @@ const Login = () => {
 
           <form className="space-y-4" onSubmit={handleSubmit}>
             <Input
-              type="email"
-              name="email"
+              type="text"
+              name="emailOrUsername"
               placeholder="Email address or Username"
               value={formData.email}
               onChange={handleChange}
@@ -62,12 +77,20 @@ const Login = () => {
               required
             />
 
-            <Button className="mt-4" type="submit">
-              Sign up
+            <Button
+              className="mt-4"
+              type="submit"
+              disabled={
+                loading || !formData.emailOrUsername || !formData.password
+              }
+            >
+              {loading ? "Logging in..." : "Log in"}
             </Button>
           </form>
 
-          {/* <p className="text-red-500 text-xs text-center mt-4">error</p> */}
+          {error && (
+            <p className="text-red-500 text-xs text-center mt-4">{error}</p>
+          )}
 
           <div className="flex items-center my-8">
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
@@ -76,14 +99,29 @@ const Login = () => {
           </div>
 
           <div className="space-y-4 mb-8">
-            <Button variant="secondary" icon={<FcGoogle className="w-6 h-6" />}>
+            <Button
+              variant="secondary"
+              icon={<FcGoogle className="w-6 h-6" />}
+              onClick={() => handleSocialLogin("google")}
+            >
               Continue with Google
             </Button>
 
-            <Button variant="secondary" icon={<FaGithub className="w-6 h-6" />}>
+            <Button
+              variant="secondary"
+              icon={<FaGithub className="w-6 h-6" />}
+              onClick={() => handleSocialLogin("github")}
+            >
               Continue with GitHub
             </Button>
           </div>
+
+          <Link
+            to="/forgot-password"
+            className="block text-center text-base text-gray-600 hover:text-pink-500 transition-colors mt-8"
+          >
+            Forgot password?
+          </Link>
         </div>
 
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl px-12 py-8 text-center">
