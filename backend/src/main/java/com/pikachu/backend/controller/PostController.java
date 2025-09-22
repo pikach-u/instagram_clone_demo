@@ -1,5 +1,8 @@
 package com.pikachu.backend.controller;
 
+import com.pikachu.backend.dto.PostRequest;
+import com.pikachu.backend.dto.PostResponse;
+import com.pikachu.backend.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,5 +32,20 @@ public class PostController {
         Pageable pageable = PageRequest.of(page, size);
         Page<PostResponse> posts = postService.getAllPosts(pageable);
         return ResponseEntity.ok(posts);
+    }
+
+    @PutMapping("/{postId}")
+    public ResponseEntity<PostResponse> updatePost(
+            @PathVariable Long postId,
+            @Valid @RequestBody PostRequest request
+    ) {
+        PostResponse response = postService.updatePost(postId, request);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId) {
+        postService.deletePost(postId);
+        return ResponseEntity.noContent().build();
     }
 }

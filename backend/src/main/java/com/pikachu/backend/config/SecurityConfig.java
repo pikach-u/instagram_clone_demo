@@ -1,6 +1,7 @@
 package com.pikachu.backend.config;
 
 import com.pikachu.backend.security.JwtAuthenticationFilter;
+import com.pikachu.backend.security.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
